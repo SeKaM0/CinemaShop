@@ -1,27 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { GetCinemas } from './api';
 import './App.scss';
 
-interface Props {
-  onClick: () => void;
-}
-
-export const Provider: React.FC<Props> = React.memo(
-  ({ onClick, children }) => (
-    <button
-      type="button"
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  ),
-);
-
 export const App: React.FC = () => {
+  const [cinemas, setCinemas] = useState<Cinema[] | null>(null);
+
+  const cinem = async () => {
+    const getCinema:Cinema[] = await GetCinemas();
+
+    setCinemas(getCinema);
+  };
+
+  useEffect(() => {
+    cinem();
+  }, []);
+
   return (
     <div className="starter">
-      <Provider onClick={() => ({})}>
-        <TodoList />
-      </Provider>
+      {cinemas && cinemas.map(elem => (
+        <h4 key={elem.id}>
+          {elem.title}
+        </h4>
+      ))}
     </div>
   );
 };
