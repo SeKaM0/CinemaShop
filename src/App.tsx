@@ -1,27 +1,34 @@
+import { Box, CircularProgress } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { GetCinemas } from './api';
+import { getData } from './api/api';
 import './App.scss';
+import { Header } from './components/Header/Header';
+import { Intro } from './components/Intro/Intro';
+import { MoviesList } from './components/MoviesList/MoviesList';
 
 export const App: React.FC = () => {
-  const [cinemas, setCinemas] = useState<Cinema[] | null>(null);
+  const [movies, setMovies] = useState<Movie[] | null>(null);
 
-  const cinem = async () => {
-    const getCinema:Cinema[] = await GetCinemas();
+  const getMovies = async () => {
+    const data: Data = await getData();
 
-    setCinemas(getCinema);
+    setMovies(data.Films);
   };
 
   useEffect(() => {
-    cinem();
+    getMovies();
   }, []);
 
   return (
-    <div className="starter">
-      {cinemas && cinemas.map(elem => (
-        <h4 key={elem.id}>
-          {elem.title}
-        </h4>
-      ))}
-    </div>
+    <>
+      <Header />
+      <Intro />
+      {movies ? <MoviesList movies={movies} />
+        : (
+          <Box sx={{ display: 'flex' }}>
+            <CircularProgress />
+          </Box>
+        )}
+    </>
   );
 };
