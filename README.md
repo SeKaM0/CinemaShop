@@ -1,7 +1,5 @@
 # Project Title
 
-- [DEMO LINK](https://sekam0.github.io/abz.TestTask/)
-
 ## Description
 Create React application 
 
